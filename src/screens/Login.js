@@ -44,8 +44,6 @@ export class Login extends Component {
             <View style={styles.container}>
                 <Text style={styles.title}>Login:</Text>
 
-
-
                 <TextInput
                     style={styles.field}
                     keyboardType='email-address'
@@ -66,7 +64,7 @@ export class Login extends Component {
                     <Text style={styles.buttonText}>Enviar</Text>
                 </TouchableOpacity>
                 <Text style={styles.error}>
-                    {this.state.errMsj && <Text>{this.state.errMsj}</Text>}
+                    {this.state.errMsj ? <Text style={styles.error}>{this.state.errMsj}</Text> : null}
                 </Text>
 
                 <TouchableOpacity
