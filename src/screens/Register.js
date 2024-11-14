@@ -90,7 +90,6 @@ class Register extends Component {
         >
           <Text style={styles.buttonText}>Registrarse</Text>
         </TouchableOpacity>
-
         <Text style={styles.error}>
           {this.state.errorMsg && <Text>{this.state.errorMsg}</Text>}
         </Text>
