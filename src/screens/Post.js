@@ -8,17 +8,15 @@ export default class Post extends Component {
         super(props);
         this.state = {
             text: "",
-            userLiked: false,
-            likesCount: this.props.post.likes.length,
+            likesCount: this.props.post ? this.props.post.likes.length : 0,
+            likes: this.props.post ? this.props.post.likes : [],
+
         };
     }
 
-    componentDidMount(){
-        if(this.props.post.likes.includes(auth.currentUser.email)){
-            this.setState({
-                userLiked:true
-
-            })
+    componentDidMount() {
+        if (this.props.post && this.props.post.likes.includes(auth.currentUser.email)) {
+            this.setState({ userLiked: true });
         }
     }
 
@@ -55,7 +53,7 @@ export default class Post extends Component {
             likes: []
         }).then(() => {
             console.log('Se agregó el post');
-            this.setState({ text: "" }); 
+            this.setState({ text: "" });
         }).catch(e => console.log(e));
     };
 
@@ -72,11 +70,11 @@ export default class Post extends Component {
                         <Text style={styles.likes}>Likes: {this.state.likesCount}</Text>
 
                         {this.state.userLiked ? (
-                            <TouchableOpacity onPress={()=>{this.handleUnlike()}}>
+                            <TouchableOpacity onPress={() => { this.handleUnlike() }}>
                                 <Text>Quitar Like</Text>
                             </TouchableOpacity>
                         ) : (
-                            <TouchableOpacity onPress={()=>{this.handleLike()}}>
+                            <TouchableOpacity onPress={() => { this.handleLike() }}>
                                 <Text>Dar Like</Text>
                             </TouchableOpacity>
                         )}
@@ -89,7 +87,7 @@ export default class Post extends Component {
                             onChangeText={(text) => this.setState({ text })}
                             value={this.state.text}
                         />
-                        <TouchableOpacity onPress={()=>{this.handlePostSubmit()}} style={styles.submitButton}>
+                        <TouchableOpacity onPress={() => { this.handlePostSubmit() }} style={styles.submitButton}>
                             <Text>Crear post</Text>
                         </TouchableOpacity>
                     </>
