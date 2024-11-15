@@ -34,7 +34,7 @@ export class Login extends Component {
     componentDidMount() {
         auth.onAuthStateChanged(user => {
             if (user) {
-                this.props.navigation.navigate('Home'); // Si el usuario ya está logueado, redirigir a Home
+                this.props.navigation.navigate('Login'); // Si el usuario ya está logueado, redirigir a Home
             }
         });
     }

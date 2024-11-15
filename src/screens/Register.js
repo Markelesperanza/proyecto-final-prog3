@@ -69,7 +69,7 @@ class Register extends Component {
         <TextInput
           style={styles.field}
           keyboardType="default"
-          placeholder="password"
+          placeholder="Password"
           secureTextEntry={true}
           onChangeText={text => this.setState({ password: text })}
           value={this.state.password}
