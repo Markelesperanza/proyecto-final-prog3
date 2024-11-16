@@ -1,4 +1,5 @@
 import { Text, View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
 import React, { Component } from 'react';
 import { auth, db } from '../firebase/config';
 import firebase from 'firebase';
@@ -69,15 +70,14 @@ export default class Post extends Component {
                         </Text>
                         <Text style={styles.likes}>Likes: {this.state.likesCount}</Text>
 
-                        {this.state.userLiked ? (
-                            <TouchableOpacity onPress={() => { this.handleUnlike() }}>
-                                <Text>Quitar Like</Text>
-                            </TouchableOpacity>
-                        ) : (
-                            <TouchableOpacity onPress={() => { this.handleLike() }}>
-                                <Text>Dar Like</Text>
-                            </TouchableOpacity>
-                        )}
+                        <TouchableOpacity onPress={this.state.userLiked ? ()=>{this.handleUnlike()} : ()=>{this.handleLike()}}>
+                            <FontAwesome
+                                name={this.state.userLiked ? "heart" : "heart-o"}
+                                size={24}
+                                color={this.state.userLiked ? "red" : "grey"} 
+                                style={styles.likeIcon}
+                            />
+                        </TouchableOpacity>
                     </>
                 ) : (
                     <>
