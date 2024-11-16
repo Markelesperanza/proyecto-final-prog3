@@ -55,12 +55,15 @@ export default class Home extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 10,
+        paddingTop: 40,
+        paddingHorizontal: 20,
+        backgroundColor: '#f3e5f5', 
     },
     title: {
-        fontSize: 24,
+        fontSize: 28,
         fontWeight: 'bold',
+        marginBottom: 30,
+        color: '#6a1b9a',
         textAlign: 'center',
-        marginVertical: 10,
     },
 });

@@ -45,7 +45,7 @@ class Profile extends Component {
             });
     }
 
-    handleLogout = () => {
+    logout = () => {
         auth.signOut()
             .then(() => {
                 this.props.navigation.navigate('Login');
@@ -76,34 +76,32 @@ class Profile extends Component {
             <View style={styles.container}>
                 <Text style={styles.title}>Mi Perfil</Text>
                 {userData ? (
-                    <>
-                        <Text>Nombre de usuario: {userData.userName}</Text>
-                        <Text>Email: {userData.mail}</Text>
-                        <Text>Cantidad de publicaciones: {postNum}</Text>
-                    </>
+                    <View style={styles.userInfoContainer}>
+                        <Text style={styles.userInfo}>Nombre de usuario: {userData.userName}</Text>
+                        <Text style={styles.userInfo}>Email: {userData.mail}</Text>
+                        <Text style={styles.userInfo}>Cantidad de publicaciones: {postNum}</Text>
+                    </View>
                 ) : (
-                    <Text>Cargando información...</Text>
+                    <Text style={styles.loadingText}>Cargando información...</Text>
                 )}
 
                 {posts.length > 0 ? (
                     <FlatList
-                        data={posts}
-                        keyExtractor={(item) => item.id}
-                        renderItem={({ item }) => (
-                            <View>
-                                <Post post={item} />
-                                <Button
-                                    title="Eliminar publicación"
-                                    onPress={() => this.handleDeletePost(item.id)}
-                                />
-                            </View>
-                        )}
-                    />
+                    data={posts}
+                    keyExtractor={(item) => item.id}
+                    renderItem={({ item }) => (
+                        <View style={styles.postContainer}>
+                            <Post post={item} />
+
+                            <Button title="Eliminar publicación" onPress={() => this.handleDeletePost(item.id)} color="#8e24aa" />
+                        </View>
+                    )}
+                />
                 ) : (
-                    <Text>No tienes publicaciones aún.</Text>
+                    <Text style={styles.noPostsText} >No tienes publicaciones aún.</Text>
                 )}
 
-                <Button title="Cerrar sesión" onPress={this.handleLogout} />
+                <Button title="Cerrar sesión" onPress={this.logout} color="#8e24aa" />
             </View>
         );
     }
@@ -112,14 +110,47 @@ class Profile extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 20,
+        paddingTop: 40,
+        paddingHorizontal: 20,
+        backgroundColor: '#f3e5f5', 
     },
     title: {
-        fontSize: 24,
+        fontSize: 28,
         fontWeight: 'bold',
-        marginBottom: 10,
+        marginBottom: 30,
+        color: '#6a1b9a',
+        textAlign: 'center',
+    },
+    userInfoContainer: {
+        marginBottom: 30,
+    },
+    userInfo: {
+        fontSize: 16,
+        color: '#4a148c',
+        marginBottom: 5,
+    },
+    loadingText: {
+        fontSize: 16,
+        color: '#4a148c',
+        textAlign: 'center',
+    },
+    postContainer: {
+        marginBottom: 15,
+        padding: 15,
+        borderRadius: 10,
+        borderColor: '#d1c4e9',
+        borderWidth: 1,
+        backgroundColor: '#ffffff',
+        shadowColor: '#4a148c',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 4,
+    },
+    noPostsText: {
+        color: "#d32f2f",
+        textAlign: 'center',
+        fontSize: 16,
+        fontWeight: 'bold',
     },
 });
 

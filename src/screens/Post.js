@@ -88,7 +88,7 @@ export default class Post extends Component {
                             value={this.state.text}
                         />
                         <TouchableOpacity onPress={() => { this.handlePostSubmit() }} style={styles.submitButton}>
-                            <Text>Crear post</Text>
+                            <Text style={styles.submitButtonText} >Crear post</Text>
                         </TouchableOpacity>
                     </>
                 )}
@@ -120,16 +120,32 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     input: {
+        width: '100%',
+        padding: 15,
+        marginBottom: 15,
+        borderRadius: 10,
+        borderColor: '#d1c4e9',
         borderWidth: 1,
-        borderColor: 'gray',
-        padding: 10,
-        marginVertical: 5,
+        backgroundColor: '#ede7f6',
+        fontSize: 16,
+        color: '#4a148c',
     },
     submitButton: {
-        padding: 10,
-        backgroundColor: '#2196F3',
-        borderRadius: 5,
+        backgroundColor: '#8e24aa',
+        paddingVertical: 15,
+        borderRadius: 10,
         alignItems: 'center',
+        marginTop: 20,
+        shadowColor: '#4a148c',
+        shadowOffset: { width: 0, height: 3 },
+        shadowOpacity: 0.4,
+        shadowRadius: 6,
+    },
+    submitButtonText: {
+        color: '#ffffff',
+        fontWeight: 'bold',
+        fontSize: 18,
+        textTransform: 'uppercase',
     },
 });
 
