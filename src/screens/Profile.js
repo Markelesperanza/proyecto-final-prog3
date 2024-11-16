@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, FlatList, Button } from 'react-native';
 import { auth, db } from '../firebase/config';
 import Post from './Post';
+import firebase from 'firebase';
 
 class Profile extends Component {
     constructor(props) {
@@ -21,10 +22,13 @@ class Profile extends Component {
             .onSnapshot(snapshot => {
                 if (!snapshot.empty) {
                     const userDoc = snapshot.docs[0];
+                    const userData = userDoc.data();
+
                     this.setState({
                         userData: {
                             id: userDoc.id,
-                            ...userDoc.data(),
+                            userName: userData.userName,
+                            mail: userData.mail,
                         },
                     });
                 }
@@ -47,22 +51,18 @@ class Profile extends Component {
 
     logout = () => {
         auth.signOut()
-            .then(() => {
-                this.props.navigation.navigate('Login');
-            })
-            .catch(error => {
-                console.error("Error al cerrar sesión: ", error);
-            });
+            .then(() => this.props.navigation.navigate('Login'))
+            .catch(error => console.error("Error al cerrar sesión: ", error));
     }
 
-    handleDeletePost = (postId) => {
-
-        db.collection('posts').doc(postId).delete()
+    handleDeletePost(postId) {
+        db.collection('posts')
+            .doc(postId)
+            .update({
+                propiedad: firebase.firestore.FieldValue.arrayRemove({ id: postId })
+            })
             .then(() => {
-                this.setState(prevState => ({
-                    posts: prevState.posts.filter(post => post.id !== postId),
-                    postNum: prevState.posts.length - 1
-                }));
+                console.log("Post eliminado con éxito");
             })
             .catch((error) => {
                 console.error("Error al eliminar el post: ", error);
@@ -87,16 +87,16 @@ class Profile extends Component {
 
                 {posts.length > 0 ? (
                     <FlatList
-                    data={posts}
-                    keyExtractor={(item) => item.id}
-                    renderItem={({ item }) => (
-                        <View style={styles.postContainer}>
-                            <Post post={item} />
+                        data={posts}
+                        keyExtractor={(item) => item.id}
+                        renderItem={({ item }) => (
+                            <View style={styles.postContainer}>
+                                <Post post={item} />
 
-                            <Button title="Eliminar publicación" onPress={() => this.handleDeletePost(item.id)} color="#8e24aa" />
-                        </View>
-                    )}
-                />
+                                <Button title="Eliminar publicación" onPress={() => this.handleDeletePost(item.id)} color="#8e24aa" />
+                            </View>
+                        )}
+                    />
                 ) : (
                     <Text style={styles.noPostsText} >No tienes publicaciones aún.</Text>
                 )}
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingTop: 40,
         paddingHorizontal: 20,
-        backgroundColor: '#f3e5f5', 
+        backgroundColor: '#f3e5f5',
     },
     title: {
         fontSize: 28,
