@@ -5,6 +5,7 @@ import Register from './src/screens/Register'
 import Login from './src/screens/Login';
 import HomeMenu from './src/componentes/HomeMenu';
 import Home from './src/screens/Home'
+import Profile from './src/screens/Profile';
 
 const Stack = createNativeStackNavigator();
 
@@ -26,7 +27,11 @@ export default function App() {
       <Stack.Screen options={{
           headerShown: false,
           }} name="Home" component={Home} />
+      <Stack.Screen options={{
+          headerShown: false,
+          }} name="Profile" component={Profile} />
       </Stack.Navigator>
+      
 
     </NavigationContainer>
 

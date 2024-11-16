@@ -15,7 +15,6 @@ export class Login extends Component {
     handleSubmit() {
         const { email, password } = this.state;
 
-        // Validación de campos vacíos
         if (!email || !password) {
             this.setState({ errMsj: "Por favor, completa todos los campos" });
             return;
@@ -24,7 +23,7 @@ export class Login extends Component {
         auth.signInWithEmailAndPassword(email, password)
             .then(() => {
                 this.setState({ errMsj: '' });
-                this.props.navigation.navigate('Home'); // Redirigir a Home tras el login exitoso
+                this.props.navigation.navigate('HomeMenu');
             })
             .catch(error => {
                 this.setState({ errMsj: error.message });
@@ -34,7 +33,7 @@ export class Login extends Component {
     componentDidMount() {
         auth.onAuthStateChanged(user => {
             if (user) {
-                this.props.navigation.navigate('Login'); // Si el usuario ya está logueado, redirigir a Home
+                this.props.navigation.navigate('Login');
             }
         });
     }
