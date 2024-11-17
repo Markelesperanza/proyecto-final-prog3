@@ -36,11 +36,17 @@ class Profile extends Component {
 
         db.collection('posts')
             .where('owner', '==', userEmail)
-            .onSnapshot(snapshot => {
-                const posts = snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data(),
-                }));
+            .onSnapshot((docs) => {
+                let posts = [];
+
+                docs.forEach((doc) => {
+                    posts.push({
+                        id: doc.id,
+                        ...doc.data(),
+                    });
+                });
+
+                posts.sort((a, b) => b.createdAt - a.createdAt);
 
                 this.setState({
                     postNum: posts.length,
