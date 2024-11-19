@@ -64,9 +64,7 @@ class Profile extends Component {
     handleDeletePost(postId) {
         db.collection('posts')
             .doc(postId)
-            .update({
-                propiedad: firebase.firestore.FieldValue.arrayRemove({ id: postId })
-            })
+            .delete()
             .then(() => {
                 console.log("Post eliminado con éxito");
             })

@@ -15,8 +15,13 @@ export class Login extends Component {
     handleSubmit() {
         const { email, password } = this.state;
 
-        if (!email || !password) {
-            this.setState({ errMsj: "Por favor, completa todos los campos" });
+        if (!email) {
+            this.setState({ errMsj: "El campo de correo electrónico está vacío." });
+            return;
+        }
+
+        if (!password) {
+            this.setState({ errMsj: "El campo de contraseña está vacío." });
             return;
         }
 
@@ -28,6 +33,7 @@ export class Login extends Component {
             .catch(error => {
                 this.setState({ errMsj: error.message });
             });
+
     }
 
     componentDidMount() {
