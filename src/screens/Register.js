@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, TextInput, Switch } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
 import { db, auth } from "../firebase/config";
 
 class Register extends Component {
@@ -9,7 +9,6 @@ class Register extends Component {
       email: "",
       password: "",
       userName: '',
-      rememberMe: false,
       errorMsg: "",
       registered: false,
     };
@@ -32,12 +31,8 @@ class Register extends Component {
         }
       })
       .catch(error => {
-        this.setState({ errorMsg: error.message });
+        this.setState({ errorMsg: "Error al registrar el usuario. Intenta de nuevo." });
       });
-  }
-
-  toggleRememberMe = () => {
-    this.setState({ rememberMe: !this.state.rememberMe });
   }
 
   validateInputs = () => {
@@ -74,14 +69,6 @@ class Register extends Component {
           onChangeText={text => this.setState({ password: text })}
           value={this.state.password}
         />
-
-        <View style={styles.rememberMeContainer}>
-          <Text>Recordarme</Text>
-          <Switch
-            value={this.state.rememberMe}
-            onValueChange={this.toggleRememberMe}
-          />
-        </View>
 
         <TouchableOpacity
           style={styles.button}
@@ -159,17 +146,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontSize: 14,
   },
-  rememberMeContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 15,
-  },
-  rememberMeText: {
-    fontSize: 16,
-    color: '#6a1b9a', 
-    marginRight: 10,
-  },
 });
-
 
 export default Register;

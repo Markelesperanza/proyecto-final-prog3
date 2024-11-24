@@ -9,6 +9,7 @@ class Usuarios extends Component {
             usuarios: [],
             filteredUsuarios: [],
             searchQuery: '',
+            noResults: false, 
         };
     }
 
@@ -23,7 +24,11 @@ class Usuarios extends Component {
                         username: doc.data().userName,
                     });
                 });
-                this.setState({ usuarios, filteredUsuarios: usuarios });
+                this.setState({ 
+                    usuarios, 
+                    filteredUsuarios: usuarios, 
+                    noResults: false, 
+                });
             },
             (error) => {
                 console.error("Error al obtener usuarios:", error);
@@ -42,13 +47,17 @@ class Usuarios extends Component {
             usuario.username.toLowerCase().includes(searchQuery.toLowerCase())
         );
 
-        this.setState({ filteredUsuarios });
+        this.setState({ 
+            filteredUsuarios, 
+            noResults: filteredUsuarios.length === 0, 
+        });
     };
 
     handleResetFilter = () => {
         this.setState({
             searchQuery: '',
             filteredUsuarios: this.state.usuarios,
+            noResults: false, 
         });
     };
 
@@ -60,7 +69,7 @@ class Usuarios extends Component {
     );
 
     render() {
-        const { filteredUsuarios, searchQuery } = this.state;
+        const { filteredUsuarios, searchQuery, noResults } = this.state;
 
         return (
             <View style={styles.container}>
@@ -80,16 +89,16 @@ class Usuarios extends Component {
                     <Text style={styles.resetButtonText}>Resetear Búsqueda</Text>
                 </TouchableOpacity>
 
-                {filteredUsuarios.length > 0 ? (
+                {noResults ? (
+                    <Text style={styles.noResultsText}>
+                        El usuario no existe
+                    </Text>
+                ) : (
                     <FlatList
                         data={filteredUsuarios}
                         keyExtractor={(item) => item.id}
                         renderItem={this.renderUsuario}
                     />
-                ) : (
-                    <Text style={styles.noResultsText}>
-                        El nombre de usuario no existe
-                    </Text>
                 )}
             </View>
         );
@@ -153,10 +162,10 @@ const styles = StyleSheet.create({
     },
     noResultsText: {
         color: "#d32f2f",
-        textAlign: 'center',
+        textAlign: "center",
         marginTop: 20,
         fontSize: 16,
-        fontWeight: 'bold',
+        fontWeight: "bold",
     },
 });
 
