@@ -2,48 +2,15 @@ import { Text, View, TextInput, TouchableOpacity, StyleSheet } from 'react-nativ
 import { FontAwesome } from '@expo/vector-icons';
 import React, { Component } from 'react';
 import { auth, db } from '../firebase/config';
-import firebase from 'firebase';
+import Likes from '../componentes/Likes'
 
 export default class Post extends Component {
     constructor(props) {
         super(props);
         this.state = {
             text: "",
-            likesCount: this.props.post ? this.props.post.likes.length : 0,
-            likes: this.props.post ? this.props.post.likes : [],
-
         };
     }
-
-    componentDidMount() {
-        if (this.props.post && this.props.post.likes.includes(auth.currentUser.email)) {
-            this.setState({ userLiked: true });
-        }
-    }
-
-    handleLike = () => {
-        const postId = this.props.post.id;
-        db.collection('posts').doc(postId).update({
-            likes: firebase.firestore.FieldValue.arrayUnion(auth.currentUser.email)
-        }).then(() => {
-            this.setState({
-                userLiked: true,
-                likesCount: this.props.post.likes.length
-            });
-        }).catch(error => console.error("Error adding like: ", error));
-    };
-
-    handleUnlike = () => {
-        const postId = this.props.post.id;
-        db.collection('posts').doc(postId).update({
-            likes: firebase.firestore.FieldValue.arrayRemove(auth.currentUser.email)
-        }).then(() => {
-            this.setState({
-                userLiked: false,
-                likesCount: this.props.post.likes.length
-            });
-        }).catch(error => console.error("Error removing like: ", error));
-    };
 
     handlePostSubmit = () => {
         const { text } = this.state;
@@ -53,7 +20,6 @@ export default class Post extends Component {
             createdAt: new Date(),
             likes: []
         }).then(() => {
-            console.log('Se agregó el post');
             this.setState({ text: "" });
         }).catch(e => console.log(e));
     };
@@ -68,16 +34,8 @@ export default class Post extends Component {
                         <Text style={styles.date}>
                             Fecha: {this.props.post.createdAt ? this.props.post.createdAt.toDate().toLocaleString() : 'Sin fecha'}
                         </Text>
-                        <Text style={styles.likes}>Likes: {this.state.likesCount}</Text>
+                        <Likes postId={this.props.post.id} likes={this.props.post.likes} />
 
-                        <TouchableOpacity onPress={this.state.userLiked ? ()=>{this.handleUnlike()} : ()=>{this.handleLike()}}>
-                            <FontAwesome
-                                name={this.state.userLiked ? "heart" : "heart-o"}
-                                size={24}
-                                color={this.state.userLiked ? "red" : "grey"} 
-                                style={styles.likeIcon}
-                            />
-                        </TouchableOpacity>
                     </>
                 ) : (
                     <>
@@ -114,10 +72,6 @@ const styles = StyleSheet.create({
         fontSize: 10,
         color: 'gray',
         marginTop: 5,
-    },
-    likes: {
-        marginTop: 5,
-        fontWeight: 'bold',
     },
     input: {
         width: '100%',
